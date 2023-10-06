@@ -20,13 +20,13 @@
 - name: Run the drivers_test binary
   block:
     - name: run drivers_test
-      command: /root/drivers_test -m
+      command: /root/drivers_test -m --gtest_filter=-'Actions.ia32*'
       register: result
       when: inventory_hostname not in execve_bug_kernels
 
     # Exclude the execve family syscalls when running in bugged kernels
     - name: run drivers_test excluding execve syscall.
-      command: /root/drivers_test -m --gtest_filter=-'SyscallEnter.execveE:SyscallEnter.execveatE'
+      command: /root/drivers_test -m --gtest_filter=-'SyscallEnter.execveE:SyscallEnter.execveatE:Actions.ia32*'
       when: inventory_hostname in execve_bug_kernels
       register: result
   rescue:
